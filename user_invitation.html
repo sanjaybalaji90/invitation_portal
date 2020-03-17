@@ -22,15 +22,16 @@
 </head>
 <body>
 	<article class="user1 container">
-		<div class="col-xs-12 content-wrapper container" style="overflow-x: hidden;">
+		<!-- <div class="col-xs-12 content-wrapper container" style="overflow-x: hidden;"> -->
+				<div class="col-xs-12 content-wrapper container" style="overflow: hidden;height: 96vh;">
 			<div>
-				<header class="col-sm-12 col-xs-12 all-page-header user_header">
+				<header class="col-sm-12 col-xs-12 all-page-header1 user_header1">
 					<!--Header Logo Start -->
 					<div class="col-sm-7 " align="right">
 						<p><img class="image" src="images/logo.png" alt="Logo" align="left"></p>
 					</div>
 					<div class="col-sm-5 user_text">
-						<a href="">
+						<a href="http://192.168.3.214/Invitation_Portal/login.php">
 							<p id="user"></p>
 						</a>
 					</div>
@@ -42,7 +43,7 @@
 							<form class="" id="eventDetails" action="" method="post" enctype="multipart/form-data">
 								<!--   <h4>Invitaion Portal <h4> -->
 								<div class="container  user_container">
-									<div class='row rowfluidalignment invitation_image_user col-sm-5'>
+									<div class='row rowfluidalignment invitation_image_user col-sm-5' style="width: 61%;height: 74vh;">
 										<div class="changeme">
 											<fieldset class='col-sm-12 form-group temp_field invitation_headings'>
 												<h2 id="InvitationName"></h2>
@@ -79,28 +80,36 @@
 								<div class=" user_form">
 									<div class="user_form_text">
 									<fieldset class="form-group col-sm-2 ">
-										<label class="container_check paddingL35">Alone
+										<label class="container_check paddingL35"><b>Alone</b>
 											<input name="alone" value="alone" checked="checked" type="radio"
 												class="alone">
 											<span class="checkmark dot_check"></span>
 										</label>
 									</fieldset>
 									<fieldset class="form-group col-sm-2 ">
-										<label class="container_check paddingL35">With Spouse
+										<label class="container_check paddingL35"><b>With Spouse</b>
 											<input name="alone" value="with spouse" type="radio" class="alone">
 											<span class="checkmark dot_check"></span>
 										</label>
 									</fieldset>
 									<div class="form-group col-sm-4">
-										<label for="email">Children</label>
-										<select class="form-control" name="childs" id="Childern">
-											<option value="0" selected="selected">0</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-										</select>
+											<table style="margin-top: 0px; width: 54%">
+													<tbody><tr>
+														<td>
+															<label for="email"><b>Children</b></label>
+														</td>
+														<td>
+															<select class="form-control" style="" name="childs" id="Childern">
+																							<option value="0" selected="selected">0</option>
+																							<option value="1">1</option>
+																							<option value="2">2</option>
+																						</select>
+														</td>
+													</tr>
+													</tbody></table>
+																			
 									</div>
-									<div class="form-group col-sm-4">
+									<!-- <div class="form-group col-sm-4">
 										<label for="pwd">Others</label>
 										<select class="form-control" name="others" id="others">
 											<option value="0" selected="selected">0</option>
@@ -108,9 +117,14 @@
 											<option value="2">2</option>
 											<option value="3">3</option>
 										</select>
-									</div>
+									</div> -->
+									<!-- <fieldset class="form-group col-sm-2 ">
+										<label class="container_check paddingL35">Comments(optional)
+											<textarea name="comments" id="comments"></textarea>
+										</label>
+									</fieldset> -->
 									<fieldset class="col-sm-12 col-xs-12 col-md-5 col-lg-5 form-group submit_button">
-										<div class="widgetSearchButton user_buttons">
+										<div class="widgetSearchButton user_buttons" style="margin-top: -78px; margin-right: 90px;">
 											<input name="decline" id="decline" value="Decline"
 												class="btn btn-info new-btn-chang cust-bttn " type="submit">
 											<input name="sub" id="accept" value="Attend" class="btn btn-info cust-bttn "
@@ -277,6 +291,7 @@
 					var user = response[i].membername;
 					var salutation = response[i].salutation;
 					var template=response[i].template_id;
+					var templatepath=response[i].templatepath;
 					var fontcolor = response[i].fontcolor;
 					var fontsize = response[i].fontsize;
 					$('.invitation_headings p,.invitation_headings h4,.invitation_headings h2').css('color', fontcolor);
@@ -289,11 +304,17 @@
 					$("#eventPlace").html(place);
 					$("#InvitationAddress").html(address);
 					$("#user").html(user);
+					
 					if (template == 1) {
-					$('.invitation_image_user').css('background-image', 'url(images/invitation.jpg)');
-				} else {
-					$('.invitation_image_user').css('background-image', 'url(images/inv14.PNG)');
-				}
+						$('.invitation_image_user').css('background-image', 'url(images/invitation.jpg)');
+					}else if(template=='default'){
+						$('.changeme').empty();
+						//$('.invitation_image_user').css('background-image', 'url(images/dynamic.jpg)');
+						$('.invitation_image_user').css('background-image', 'url(images/'+templatepath+')');
+						$('.invitation_image_user').css('width', '61%');
+					} else {
+						$('.invitation_image_user').css('background-image', 'url(images/inv14.PNG)');
+					}
 				if(InvitationName==null){
 					$(".searchConteiner2").css('display','none');
 					$('.no_invitationpopup').popup('show');
@@ -315,13 +336,15 @@
 			var id = dataValue[1].split('=')[1];
 			var alone_or_spouse = $("input:checked").val();
 			var Childern = $("#Childern").val();
-			var others = $("#others").val();
+			//var others = $("#others").val();
+			//var comments = $("textarea#comments").val();
 			var data = {
 				'alone_or_spouse': alone_or_spouse,
 				'email': email,
 				'id': id,
 				'Childern': Childern,
-				'others': others,
+				//'others': others,
+				//'comments':comments,
 				'fname': 'accept'
 			}
 			$.ajax({
@@ -329,19 +352,19 @@
 				type: "get",
 				data: data,
 				success: function (response) {
-					//alert(response);
-					if (response === 'sucess') {
-						$('.popup').popup('show');
-						$('.close1').click(function () {
-							$('.popup').popup('hide');
-						})
-					}
-					if (response === 'error') {
-						$('.error_popup').popup('show');
-						$('.close1').click(function () {
-							$('.error_popup').popup('hide');
-						})
-					}
+					alert(response);return false;
+					// if (response === 'sucess') {
+					// 	$('.popup').popup('show');
+					// 	$('.close1').click(function () {
+					// 		$('.popup').popup('hide');
+					// 	})
+					// }
+					// if (response === 'error') {
+					// 	$('.error_popup').popup('show');
+					// 	$('.close1').click(function () {
+					// 		$('.error_popup').popup('hide');
+					// 	})
+					// }
 				}
 			});
 
@@ -354,10 +377,12 @@
 			var email = dataValue[0].split('=')[1];
 			var id = dataValue[1].split('=')[1];
 			var decline = $("#decline").val();
+			var comments = $("textarea#comments").val();
 			var data = {
 				'email': email,
 				'decline': decline,
 				'id': id,
+				//'comments':comments,
 				'fname': 'Decline'
 			}
 			$.ajax({
@@ -365,19 +390,19 @@
 				type: "get",
 				data: data,
 				success: function (response) {
-					// alert(response);
-					if (response === 'decline') {
-						$('.decline_popup').popup('show');
-						$('.close1').click(function () {
-							$('.decline_popup').popup('hide');
-						})
-					}
-					if (response === 'error') {
-						$('.error_popup').popup('show');
-						$('.close1').click(function () {
-							$('.error_popup').popup('hide');
-						})
-					}
+					alert(response);return false;
+					// if (response === 'decline') {
+					// 	$('.decline_popup').popup('show');
+					// 	$('.close1').click(function () {
+					// 		$('.decline_popup').popup('hide');
+					// 	})
+					// }
+					// if (response === 'error') {
+					// 	$('.error_popup').popup('show');
+					// 	$('.close1').click(function () {
+					// 		$('.error_popup').popup('hide');
+					// 	})
+					// }
 				}
 			})
 

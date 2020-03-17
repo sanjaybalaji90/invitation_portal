@@ -1006,8 +1006,8 @@ input.table1add_fields2{
 	font-weight:700;
 }
 .user_form_text{
-	padding: 40px;
-	height: 200px;
+  padding: 16px 0 0 26px;
+  height: 58px;
 	box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -1121,6 +1121,12 @@ input.table1add_fields2{
 		padding: 37px 5px;
 	}
 	.user_header{
+		padding: 0;
+  }
+  .all-page-header1 {
+		padding: 0px 0px;
+	}
+	.user_header1{
 		padding: 0;
 	}
 }
@@ -1391,13 +1397,13 @@ input.table1add_fields2{
 	margin-top: 15px;
 }
 .user_form{
-	padding: 50px;
+	/* padding: 50px; */
 	margin-bottom: 40px;
 	background: #ffff;
 }
 .user_container{
 	background: #ffff;
-	padding: 50px 0 0 0;
+	padding: 17px 0 0 0;
 	/* box-shadow: 0 0 10px #c5bdbd; */
 }
 .user_buttons{

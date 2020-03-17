@@ -4,7 +4,7 @@ include 'excel_reader.php';
 
 require 'class.phpmailer.php';
 require 'class.smtp.php';
-
+include('Config.php');
 $username = $_SESSION['user'];
 if ($_SESSION['user'] == '') {
                 header('Location: login.php');
@@ -19,25 +19,73 @@ $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     $fromName       = 'Girmiti Admin';
     $from           = 'praveen.tharigonda@girmiti.com';
-    $invitaionname  = $_POST['invitaionName'];
-    $invitaionform  = $_POST['invitaionForm'];
-    $eventplace     = $_POST['eventPlace'];
+    $invitaionname  = addslashes($_POST['invitaionName']);
+    $invitaionform  = addslashes($_POST['invitaionForm']);
+    $eventplace     = addslashes($_POST['eventPlace']);
     $eventdate1      = $_POST['eventDate'];
-    $eventdatetime      = explode('',$eventdate1);
+    $eventdatetime   = explode(' ',$eventdate1);
     $eventdate       = $eventdatetime[0];
     $eventtime       = $eventdatetime[1];
-    $address         = $_POST['address'];
+    $address         = addslashes($_POST['address']);
     $fontColor         = $_POST['fontColor'];
     $fontSize          =  $_POST['fontSize'];
     //echo $eventdate;
     $emailersubject = $_POST['emailerSubject'];
     $imageType      = $_POST['Image'];
-    $message        = $_POST['Message'];
+    $message        = addslashes($_POST['Message']);
+    $dynamaic_template = $_POST['dynamic_template'];
+    
+    
+    $selectOption = $_POST['taskOption'];
+    $templatepath='';
+    $retval=true;
+
+    if($dynamaic_template!=''){
+        $file_name = $_FILES['dynamic_templateid']['name'];
+        $file_tmp  = $_FILES['dynamic_templateid']['tmp_name'];
+        $file_ext  = strtolower(end(explode('.',$_FILES['dynamic_templateid']['name'])));
+        $extensions = array("jpeg","jpg","png");
+        $target_dir = "images/";
+        $t=time();
+        $target_file = $target_dir . $t.'.'.$file_ext;
+        
+        if(in_array($file_ext,$extensions)=== false){
+            echo "<script>alert('File type must be jpg or png or jpeg')</script>";
+            $retval=false;
+        }
+        if (move_uploaded_file($file_tmp, $target_file)) {
+            $selectOption = 'default';
+            $templatepath = $t.'.'.$file_ext;
+        } else {
+            echo "<script>alert('Sorry, there was an error uploading your file.')</script>";
+            $retval=false;
+        }
+    }
+   
+    
+        
+    
     //$Invitees_select=$_POST['Invitees_select'];
     $Invitees_bulk=$_POST['Invitees_bulk'];
+    //Invitation DateTIME
+    $sql="SELECT * FROM invitations_request_table WHERE name='$invitaionname' and date='$eventdate' and time='$eventtime' ";
+    $results =$db->query($sql);
+    $array_results = $results->fetch_array();
+    $eventId = isset($_POST['EventId'])?$_POST['EventId']:'';
+
+    
+    if(!$eventId){
+        if($array_results)  {
+            echo "<script>alert('Invitation time is already exists. Please enter a different time')</script>";
+            $retval=false;
+            
+        }
+    }
+    
     $message12=$_POST['title'];	
     $checkmember    = '';
-	$selectOption = $_POST['taskOption'];
+   
+    
     
     if(!$Invitees_bulk)  {
         $selectInvitee  = $_POST['selectInvitee'];
@@ -52,20 +100,38 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                     $checkmember .= $selected . ',';
     }
     $checkmember = rtrim($checkmember,",");
-    if (is_array($selectInvitee)) {
+    if (is_array($selectInvitee) && $retval) {
         //var_dump($selectInvitee);
         //for($i=0;$i< sizeof($selectInvitee); $i++){
         while (list($key, $val) = each($selectInvitee)) {
-	
-        $dbFunctions_obj->getEventId($eventId);
-        $dbFunctions_obj->getMemberInfoFromEmail($val,$salutation, $membername, $alone, $spose, $Child, $others);
-		
-        $val12      = explode('@', $val);
+        if($eventId==''){
+            $dbFunctions_obj->getEventId($eventId);
+        }
+        
+        $dbFunctions_obj->getMemberInfoFromEmail($val,$salutation, $membername, $alone, $spose, $Child, $others, $phone);
+		$val12      = explode('@', $val);
         $emailname  = $val12[0];
         $sucessMail = "Sucessfully Sent a Credentials";
         $errorMail  = "Failed to sent a Credentials";
         $subject    = "Invitation";
         $to         = $val;
+
+        $ciphering = "AES-128-CTR"; 
+  
+        // Use OpenSSl Encryption method 
+        $iv_length = openssl_cipher_iv_length($ciphering); 
+        $options = 0; 
+        
+        // Non-NULL Initialization Vector for encryption 
+        $encryption_iv = '1234567891011121'; 
+        
+        // Store the encryption key 
+        $encryption_key = "encryptiontest"; 
+        
+        // Use openssl_encrypt() function to encrypt the data 
+        $encryption = openssl_encrypt($val, $ciphering, 
+                    $encryption_key, $options, $encryption_iv); 
+
         $txt        = " 
 <html><head>
 <meta http-equiv='content-type' content='text/html; charset=UTF-8'>
@@ -147,55 +213,27 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
   </style>
 </head>
 <body class='body' style='padding:0; margin:0; display:block; '>
-    <table width='100%' cellspacing='0' cellpadding='0' border='0' bgcolor='#fff'>
+    <table width='100%' height='100%' cellspacing='0' cellpadding='0' border='0' bgcolor='#fff'>
         <tbody>
         <tr>
             <td>
                 <!-- begin main block -->
-                <table width='700' cellspacing='0' cellpadding='0' border='0' align='center' style='box-shadow: 0 0 8px rgb(173, 208, 218);'>
-                    <tbody>
-                        <tr>
-                            <td>                  
-                                <!-- begin wrapper -->
-                                <table width='100%' cellspacing='0' cellpadding='0' border='0'>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan='3'>
-                                          
-                                           <h3 style='text-align:center;color:#f90;font-size:25px;margin-bottom: 50px;'>". $invitaionname . "</h3></td>
-											</tr>
-                                            <tr>
-                                                <th>To</th>                                            
-                                                <th>Host</th>                                            
-                                                <th>Venue</th>    
-                                            </tr>                                                
-                                                <tr>
-                                                    <td  style=' text-align:center;color:#222;'>" . $salutation ." ". $membername . " </td>
-                                                    <td  style=' text-align:center;color:#222;' >". $invitaionform ."</td>
-                                                    <td  style=' text-align:center;color:#222;'>". $eventplace ."</td>                                                    
+                <table cellspacing='0' cellpadding='0' border='0' align='center' style='box-shadow: 0 0 8px rgb(173, 208, 218);'>
+				<tr>
+					<td style='padding: 20px;'>
+						Hi<br><br>Please Click on the link below to confirm your participation for the event.
+					</td>
+				</tr>
+				<tr>
+                    <td colspan='3'valign='top' style=' text-align:center; font-size: 18px;padding: 90px 20px;padding-bottom: 65px;' class='headline' colspan='4'>
+                    <a href='http://192.168.3.214/Invitation_Portal/user_invitation_list.php?param=". $encryption ."&id=".$eventId."'><div style='display: inline-block;box-shadow: 0 0 14px rgb(126, 138, 143); padding:10px;'><span style='color: black;font-size: 20px;'>View Invitation<span></div></a>
+					</td>
+				</tr>
 
-                                                </tr>
-												<tr>
-													<td colspan='3'valign='top' style=' text-align:center;color:#222; font-size: 18px;padding: 90px 20px;padding-bottom: 65px;' class='headline' colspan='4'>
-													<a href='http://192.168.5.143:9012/Invitation_Portal/user_invitation.html?email=". $val ."&id=".$eventId."'><div style='display: inline-block;box-shadow: 0 0 14px rgb(126, 138, 143); padding:10px;'><span style='color: #d72fdb;font-size: 20px;'>View Invitation<span></div></a>
-													</td>
-												</tr>
-											  <tr>
-												<td colspan='3' height='50' valign='top' style='text-align:center; padding-top:10px' >
-													<span style='font-size: 18px;color: #001be8;border-bottom: 2px solid;'>On</span><br>
-													<p style='line-height:2;'>".$eventdate." at ".$eventtime."</p>
-												<span style='font-size:18px;color: #001be8;border-bottom: 2px solid;'>Address</span><br>
-													<p style='padding: 0 226px;line-height:2;'>".$address."</p>
+                                       
 
-												</td>
-										</tr>
-                                            </table>
-                                                <!-- begin articles -->
-                                    </tbody>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+    </table>
                 <!-- end main block -->
             </td>
         </tr>
@@ -212,21 +250,12 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         $headers1      .= "From: $fromName" . " <" . $from . ">";
         //$retval = mail($to,$subject,$message1,$body);
     
-        $curArray = array(
-                        $invitaionname,
-                        $invitaionform,
-                        $eventplace,
-                        $emailersubject,
-                        $eventdate,
-                        $eventtime,
-                        $address,
-                        $val,
-                        $message,
-                        $checkmember,$selectOption,$fontColor,$fontSize
-        );
-        array_push($inputArray, $curArray);
-        //$retval = @mail($to, $subject, $txt, $headers1);        
         
+        //$retval = @mail($to, $subject, $txt, $headers1);        
+        $from = 'ravi.pidatala@girmiti.com';
+        if(isset($_POST['privateemailid']) && $_POST['privateemailid']!='') {
+            $from = $_POST['privateemailid'];
+        }
 
         $mail = new PHPMailer;
         $mail->isSMTP();
@@ -236,16 +265,52 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         $mail->Password = 'Ravi@123';
         $mail->SMTPSecure = 'STARTTLS';
         $mail->Port       = 587; 
-        $mail->From = 'ravi.pidatala@girmiti.com';
+        $mail->From = $from;
         $mail->FromName = 'Girmiti Admin';
         $mail->addAddress($to, $membername);
         $mail->WordWrap = 50;
         $mail->isHTML(true);
         $mail->Subject = 'Invitation';
         $mail->Body    = $txt;
-        $retval = $mail->send();        
+        $retval = $mail->send();
+        $status = 1;
+        if(!$retval){
+            $status = 0;
+            $retvalFalse[] = $to;
 
         }
+        $curArray = array(
+            $invitaionname,
+            $invitaionform,
+            $eventplace,
+            $emailersubject,
+            $eventdate,
+            $eventtime,
+            $address,
+            $val,
+            $message,
+            $checkmember,$selectOption,$templatepath,$fontColor,$fontSize,$status
+        );
+        array_push($inputArray, $curArray);
+        //$retval = true;
+        
+        // $curl_start = curl_init();
+        // $user_detail="balajijobs90@gmail.com:Balaji@90";
+        // $receiver_no= '8867595833'; 
+        // $sender_id="TEST SMS"; 
+        // $msg_txt= "Invitation:".$invitaionname." host:".$invitaionform." Place:".$eventplace." when:".$eventdate.$eventtime." address:".$address." message:".$message.""; 
+        // curl_setopt($curl_start,CURLOPT_URL,  "http://api.mVaayoo.com/mvaayooapi/MessageCompose");
+        // curl_setopt($curl_start, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt($curl_start, CURLOPT_POST, 1);
+        // curl_setopt($curl_start, CURLOPT_POSTFIELDS, "user=$user_detail&senderID=$sender_id&receipientno=$phone&msgtxt=$msg_txt&state=0");
+        // $buffer = curl_exec($curl_start);
+        // if(empty ($buffer))
+        // { echo " buffer is empty "; }
+        // else
+        // { echo $buffer; }
+        // curl_close($curl_start);
+
+    }
         $dbFunction_login = $dbFunctions_obj->admin_table($inputArray,$eventId);
     }
     
@@ -257,6 +322,16 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     $selectInvitee = substr($selectInvitee, 0, -2);
     echo  $selectInvitee; */
     //$retval=true;
+    $val = 'Nil';
+    if($retvalFalse){
+        $length = count($retvalFalse);
+        // echo "hi" .$length;
+        $val = $retvalFalse[0];
+        for($i=1;$i<$length;$i++){
+            $val = $val .','. $retvalFalse[$i];
+        }
+					
+    }
     if ($retval == true) {
         echo "<div class='widgetDescriptionRow clearfix newbody'><div class='popup searchpopups'>
             <div class='popupremove'>
@@ -269,7 +344,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                                     <div class='row'>
                                         <div class='widgetDescriptionRow'>
                                         <h1 class='popup_text'> Sucessfully Sent The Invitation</h1>
-                                            
+                                            <p class='popup_text' style='width:150px'>Failed Mail list: ".$val."</p>
                                         </div>
                                     </div>
                                     <!-- Popup Form Button Start -->
@@ -287,7 +362,10 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             </div>
                 </div>";
     } else {
-        echo "<div class='widgetDescriptionRow clearfix newbody'><div class='popup searchpopups'>
+        echo "<div class='widgetDescriptionRow clearfix newbody'>
+        
+        <div class='popup searchpopups'>
+        
             <div class='popupremove'>
                 <span class='fa fa-remove close1' onclick='closePopup()'></span>
             </div>
@@ -298,7 +376,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                                     <div class='row'>
                                         <div class='widgetDescriptionRow'>
                                         <h1 class='popup_text'> Failed to send the Invitation</h1>
-                                            
+                                            <p class='popup_text' style='width:150px'>Failed Mail list: ".$val."</p>
                                         </div>
                                     </div>
                                     <!-- Popup Form Button Start -->
@@ -322,3 +400,4 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     }             
 }
 ?>
+

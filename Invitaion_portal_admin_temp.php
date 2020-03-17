@@ -3,9 +3,9 @@
    include('Config.php');
    //$sql = 'SELECT * FROM `groups_table` ';
   //$sql='select mt.name as member_name,mt.`emailId`,mt.`groupname`,gt.name from members_table mt,groups_table gt where gt.name = mt.`groupname` order by mt.`groupId`';
-  $sql='select mt.name as member_name,mt.`emailId`,mt.`groupId`,gt.name from members_table mt,groups_table gt where gt.groupId = mt.`groupId` order by `groupId`';
+   $sql='select mt.name as member_name,mt.`emailId`,mt.`groupId`,gt.name from members_table mt,groups_table gt where gt.id = mt.`groupId` order by `groupId`';
    $result = $db->query($sql);
-   ?>
+?>
 <html>
    <head>
       <meta charset='utf-8'>
@@ -98,7 +98,7 @@
          		$('#datetimepicker1').datetimepicker({
          			startDate : new Date(), 
          			calendarWeeks: true,
-         			format: "yyyy-MM-dd HH:mm",
+         			format: "yyyy-MM-dd hh:mm", 
                   pickSeconds: false
          			
          		});	
@@ -168,6 +168,16 @@
                      Create Members
                   </div>
                </a>
+               <?php 
+					if($_SESSION['role']=='0'){
+						?>
+						<a href='manage_admin.php'>
+						<div class='tab-header-container '>
+							Manage admin
+						</div></a>
+						<?php
+					}
+					?>
 			   <div class="form-group col-sm-12">
 			  
 					</div>
@@ -212,7 +222,7 @@
                            <fieldset class='col-sm-12 form-group paddingLR75 invitation_headings'>
                               <h4  class="invitation_color">On</h4>
                               <div id='datetimepicker1' class='input-append date'>
-                                 <input id='eventDate' class="eventDate" name='eventDate' data-format='dd/MM/yyyy hh:mm:ss' type='text' required readonly ></input>
+                                 <input id='eventDate' class="eventDate" name='eventDate' data-format='dd/MM/yyyy h:i:s a' type='text' required readonly ></input>
                                  <span class='add-on calander_addon'>
                                  <i class="fa fa-calendar" aria-hidden="true"></i>
                                  </span>

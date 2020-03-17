@@ -48,9 +48,8 @@ class dbFunctions
 		
     }
     
-    public function getMemberInfoFromEmail($emailId, &$salutation, &$membername, &$alone, &$spose, &$Child, &$others)
+    public function getMemberInfoFromEmail($emailId, &$salutation, &$membername, &$alone, &$spose, &$Child, &$others, &$phone)
     {
-        
         $sql    = "Select * from members_table where emailId='$emailId'";
         $result = $this->conn->query($sql);
         while ($row = mysqli_fetch_array($result)) {
@@ -60,17 +59,17 @@ class dbFunctions
             $spose      = $row['spose'];
             $Child      = $row['Child'];
             $others     = $row['others'];
+            $phone     = $row['phone_num'];
         }
         //echo $roleId;
         return $result;
     }
     public function admin_table($inputArray, $eventId)
     {
-        
         for ($i = 0; $i < count($inputArray); $i++) {
-            $sql = "INSERT INTO invitations_request_table (name,from_name,place,subject,date,time,address,invitation_members,message,members,Event_Id,template_id) VALUES ('" . $inputArray[$i][0] . "','" . $inputArray[$i][1] . "','" . $inputArray[$i][2] . "','" . $inputArray[$i][3] . "','" . $inputArray[$i][4] . "','" . $inputArray[$i][5] . "','" . $inputArray[$i][6] . "','" . $inputArray[$i][7] . "','" . $inputArray[$i][8] . "','" . $inputArray[$i][9] . "','$eventId','" . $inputArray[$i][10] . "')";
+            $sql = "INSERT INTO invitations_request_table (name,from_name,place,subject,date,time,address,invitation_members,message,members,Event_Id,template_id,template_path,status) VALUES ('" . $inputArray[$i][0] . "','" . $inputArray[$i][1] . "','" . $inputArray[$i][2] . "','" . $inputArray[$i][3] . "','" . $inputArray[$i][4] . "','" . $inputArray[$i][5] . "','" . $inputArray[$i][6] . "','" . $inputArray[$i][7] . "','" . $inputArray[$i][8] . "','" . $inputArray[$i][9] . "','$eventId','" . $inputArray[$i][10] . "','" . $inputArray[$i][11] . "','" . $inputArray[$i][14] . "')";
             $result  = $this->conn->query($sql);
-            $sql2    = "INSERT INTO invitations_response_table (name,from_name,place,subject,date,time,address,invitation_members,message,members,Event_Id,template_id,fontcolor,fontsize) VALUES ('" . $inputArray[$i][0] . "','" . $inputArray[$i][1] . "','" . $inputArray[$i][2] . "','" . $inputArray[$i][3] . "','" . $inputArray[$i][4] . "','" . $inputArray[$i][5] . "','" . $inputArray[$i][6] . "','" . $inputArray[$i][7] . "','" . $inputArray[$i][8] . "','" . $inputArray[$i][9] . "','$eventId','" . $inputArray[$i][10] . "','" . $inputArray[$i][11] . "','" . $inputArray[$i][12] . "')";
+            $sql2    = "INSERT INTO invitations_response_table (name,from_name,place,subject,date,time,address,invitation_members,message,members,Event_Id,template_id,template_path,fontcolor,fontsize) VALUES ('" . $inputArray[$i][0] . "','" . $inputArray[$i][1] . "','" . $inputArray[$i][2] . "','" . $inputArray[$i][3] . "','" . $inputArray[$i][4] . "','" . $inputArray[$i][5] . "','" . $inputArray[$i][6] . "','" . $inputArray[$i][7] . "','" . $inputArray[$i][8] . "','" . $inputArray[$i][9] . "','$eventId','" . $inputArray[$i][10] . "','" . $inputArray[$i][11] . "','" . $inputArray[$i][12] . "','" . $inputArray[$i][13] . "')";
             $result2 = $this->conn->query($sql2);
             if ($result) {
                 $_SESSION['message'] = 'Successfully Created Info';
@@ -83,12 +82,17 @@ class dbFunctions
     
     public function getEventId(&$eventId)
     {
-        $eventId    = 1;
+       // $eventId    = 1;
         $getEventId = "SELECT MAX(Event_Id) AS 'MaximumValue' FROM `invitations_request_table`";
         $result1    = $this->conn->query($getEventId);
-        while ($row = mysqli_fetch_row($result1)) {
-            $eventId = $row[0]["MaximumValue"] + 1;
+        // while ($row = mysqli_fetch_row($result1)) {
+        //     echo $row[0]["MaximumValue"];die;
+        //     $eventId = $row[0]["MaximumValue"] + 1;
+        // }
+        while ($row = mysqli_fetch_assoc($result1)) {
+            $eventId = $row["MaximumValue"] + 1;
         }
+        
     }
     
     public function student_list()

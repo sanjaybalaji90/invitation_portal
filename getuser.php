@@ -2,7 +2,7 @@
 	include('Config.php');
 	error_reporting(E_ERROR | E_PARSE);
 	// Create connection
-	 $db = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
+	$db = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
 
 	$q = strval($_GET['q']);
 	//$conn = new mysqli($servername, $username, $password, $dbname);
