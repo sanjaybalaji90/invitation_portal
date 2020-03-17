@@ -1,7 +1,6 @@
 <?php
 session_start();
 include('Config.php');
-
 $db = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
 	// If the values are posted, insert them into the database.
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
