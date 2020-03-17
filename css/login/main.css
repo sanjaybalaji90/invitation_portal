@@ -1,0 +1,333 @@
+
+body {
+	font-family: 'Poppins', sans-serif;
+	font-size: 12px;
+	line-height: 1.42857143;
+	color: #333333;
+	background:#f5f6fa;
+	scrollbar-width: none;
+}
+
+/* close commented backslash hack */
+.cw-admin-login .login-container .footer .footer-txt {
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.cw-admin-login .help-block, .cw-admin-login .error-msg, .cw-admin-login .success-msg {
+	font-size: 10px;
+}
+.cw-admin-login .login-header .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cw-admin-login .login-container {
+  margin: 0 auto;
+  width: 400px;
+  overflow: hidden;
+  padding: 10px 0px 15px 0px;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+}
+.cw-admin-login .login-container h2 {
+  text-align: center;
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 50px;
+}
+.cw-admin-login .login-container h3 {
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 20px;
+}
+
+.cw-admin-login {
+	height: 100vh;
+	display:table;
+}
+.cw-admin-login .login-container .login-form-icon {
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+	display: inline-block;
+	height: 27px;
+	padding: 4px 10px;
+	vertical-align: top;
+	overflow: hidden;
+	border: 1px solid #b3b3b3;
+	border: 1px solid #b3b3b3;
+	border: 1px solid #b3b3b3;
+	background: #fff;
+	position: relative;
+	left: 1px;
+	z-index: 2;
+	top: 0;
+	font-size: 16px;
+	text-align: center;
+	box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.075);
+	background: #f8f8f8;
+}
+
+.login-form-icon .lnr, .for-got-pass .lnr{
+	border-right: 1px solid #dbdbdb;
+	padding-right: 8px;
+	color: #0072C6;
+}
+.cw-admin-login .login-container .login-form-icon .user-icon {
+  margin: 0;
+  background-image: url('images/user_icon.png');
+}
+.cw-admin-login .login-container .login-form-icon .pass-icon {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+}
+.cw-admin-login .login-container .login-sub-container .login-form-icon .pass-icon {
+	position: absolute;
+    left: 0;
+    top: 0;
+}
+.cw-admin-login .login-container .success-msg {
+  text-align: center;
+}
+.cw-admin-login .login-container .form-group .form-control {
+  height: 27px;
+  width: 100%;
+  padding: 0px 8px 0px 8px;
+}
+
+.form-control:focus .login-form-elements .login-form-icon {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.login-btn input[type="submit"], .login-btn input[type="button"] {
+	height: 35px !important;
+	border-radius: 3px;
+	border: 0;
+}
+
+.login-container .form-control {
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-left: 0;
+	border-top: 1px solid #b3b3b3;
+	border-right: 1px solid #b3b3b3;
+	border-bottom: 1px solid #b3b3b3;
+	background: #f8f8f8;
+}
+
+.cw-admin-forgot .form-control {
+	border-radius: 3px;
+	border: 1px solid #b3b3b3;
+}
+.cw-admin-login .login-container .form-group .btn {
+  font-size: 13px;
+ /*  background-image: linear-gradient(#0072C6, #59B9FF); */
+  margin: 5px 0 5px 5px;
+  font-family: open_sansregular, sans-serif,"Helvetica Neue",Helvetica,Arial;
+  color: #fff;
+  padding: 0;
+}
+
+.cw-admin-login-main-container{
+	display: table-cell;
+	vertical-align: middle;
+	height: 100vh;
+}
+
+.login-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding:0px;
+}
+.login-icon {
+	position: absolute;
+	top: 14px;
+	right: 83px;
+	font-size: 16px !important;
+	color: #fff;
+}
+
+.cw-admin-login .login-container .form-group .btn:hover {
+    text-decoration:none;
+    background: #0072C6;
+	color: #fff !important;
+}
+
+.cw-admin-forgot .form-control {
+	border-radius: 3px;
+	border: 1px solid #b3b3b3;
+}
+.cw-admin-login .login-container .form-group .btn {
+  font-size: 13px;
+  background-color: #2196F3;
+  margin: 5px 0 5px 5px;
+  font-family: open_sansregular, sans-serif,"Helvetica Neue",Helvetica,Arial;
+  color: #fff;
+  padding: 0;
+  border-radius: 6px !important;
+}
+
+.forgot-password-div {
+	padding-top: 10px !important;
+	text-align: center;
+}
+
+.forgot-password-div a {
+	color: #000 !important;
+}
+
+.login-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding:0px;
+}
+.login-icon {
+	position: absolute;
+	top: 14px;
+	right: 83px;
+	font-size: 16px !important;
+	color: #fff;
+}
+
+.cw-admin-login .login-container .form-group .btn:hover {
+	background-color: #31b0d5;
+	border-color: #269abc;			
+	color: #fff !important;
+}
+
+a {
+	color: #428bca;
+}
+
+.cw-admin-login .login-container .form-group a {
+  color: #428bca;
+}
+.cw-admin-login .login-container .for-got-pass {
+  /* margin-top: 20px; */
+  margin: 0 auto;
+  float: none;
+}
+.cw-admin-login .login-container .footer {
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+}
+
+
+.cw-admin-forgot {
+	display: table-cell;
+	vertical-align: middle;
+}
+.login-sub-container {
+	margin: 0 auto;
+	float: none;
+}
+
+input[type="text"], input[type="password"], select, textarea {
+	padding: 0 5px;
+}
+
+.graph-container.col-sm-6 {
+	width: 49%;
+}
+
+
+.red-color-error {
+	color: red !important;
+}
+.row-margin-left-prrp {
+	margin-left:0px !important;
+}
+.font-table-setting {
+	font-size:14px;
+}
+.search-table-backgroundstart {
+	background-color: #f9f9f9 !important;
+}
+
+.login-form-div {
+	margin-bottom: 7px !important;
+}
+
+.login-form-elements .form-group {
+	padding: 0;
+}
+
+.forgot-btn.form-group, .form-group.for-got-pass {
+	padding: 0 5px;
+}
+
+.forgot-btn .btn {
+	margin: 0 !important;
+}
+
+
+/* .form-group {
+	padding-left: 0;
+} */
+	
+
+
+/* Bootstrap overrides End */
+
+.searchConteiner2 {
+  background:white;
+  border: 1px solid #ddd;
+}
+.footer {
+	position:relative;
+	bottom:0;
+	left:0 ;
+	right:0;
+	text-align: center;
+	margin-top:15px;
+}
+.footer .footer-txt {
+  padding: 9px 10px 0 10px; 
+  text-align: center;
+  font-size: 11px;
+  color: #333;
+}
+.btn-info {
+  background-color: #fff;
+  color:#3188f3;
+}
+.btn-info:hover {
+  background-color: #0072C6;
+  color:white;
+}
+.btn {
+	display: inline-block;
+	padding: 6px 10px !important;
+	border-radius: 10px !important;
+	width: 75px;
+}
+.clear_both {
+	clear:both;
+}
+/* Login css Start*/
+.test {
+  margin: 0;
+  background-image: url('../images/MakerChecker.png');
+  width:64px;
+  height:29px;
+}
+.login-text {
+	color: #373A4A;
+	text-align: center;
+}
+.text-center {
+	text-align:center !important;
+}
+.form-group-login {
+	margin-bottom: 6px;
+}
+/* Login css End*/
+
