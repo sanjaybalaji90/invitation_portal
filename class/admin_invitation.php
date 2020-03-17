@@ -5,6 +5,7 @@ include 'excel_reader.php';
 require 'class.phpmailer.php';
 require 'class.smtp.php';
 include('Config.php');
+
 $username = $_SESSION['user'];
 if ($_SESSION['user'] == '') {
                 header('Location: login.php');
